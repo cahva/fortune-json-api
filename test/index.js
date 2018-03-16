@@ -218,6 +218,19 @@ run((assert, comment) => {
   })
 })
 
+run((assert, comment) => {
+  comment('use sparse fields on included record')
+  return test(
+  `/users/1?${qs.stringify({
+    'include': 'owned-pets',
+    'fields[user]': 'name,birthday',
+    'fields[owned-pets]': 'name'
+  })}`, null, response => {
+    assert(validate(response.body), 'response adheres to json api')
+    assert(response.status === 200, 'status is correct')
+  })
+})
+
 
 run((assert, comment) => {
   comment('use limit option')
